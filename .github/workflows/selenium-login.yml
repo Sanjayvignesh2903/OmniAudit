@@ -1,0 +1,40 @@
+name: Selenium E2E login test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Install Google Chrome and ChromeDriver
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Build Web Application
+      run: npx expo export --platform web
+
+    - name: Start Dev Server
+      run: |
+        npx expo start --web &
+        sleep 15 # Wait for Expo dev server to fully startup on port 8081
+
+    - name: Run E2E Selenium Tests
+      run: node automated_test/selenium/selenium_test.js

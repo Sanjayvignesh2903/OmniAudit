@@ -1,0 +1,5 @@
+{
+  "webBaseUrl": "http://localhost:8081",
+  "apiBaseUrl": "https://genuine-patience-production-de44.up.railway.app/analyze-document/",
+  "mobileAppPath": "./builds/app-release.apk"
+}
