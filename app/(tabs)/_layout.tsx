@@ -15,9 +15,9 @@ export default function TabLayout() {
   const getTabBarStyles = () => {
     if (Platform.OS === 'web') {
       return {
-        height: isMobileWeb ? 78 : 64,
-        paddingBottom: isMobileWeb ? 22 : 10,
-        paddingTop: 8,
+        height: isMobileWeb ? 76 : 64,
+        paddingTop: 0,
+        paddingBottom: 0,
       };
     }
     return {
@@ -47,6 +47,10 @@ export default function TabLayout() {
           fontFamily: theme.typography.fontFamily,
           fontSize: 12,
           fontWeight: '500',
+        },
+        tabBarItemStyle: {
+          paddingBottom: Platform.OS === 'web' ? (isMobileWeb ? 12 : 6) : 0,
+          paddingTop: Platform.OS === 'web' ? 6 : 0,
         }
       }}>
       <Tabs.Screen

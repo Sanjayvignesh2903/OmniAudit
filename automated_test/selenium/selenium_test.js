@@ -5,7 +5,10 @@ const fs = require('fs');
 const path = require('path');
 
 const inputConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../input.json'), 'utf8'));
-const baseUrl = inputConfig.webBaseUrl || 'http://localhost:8081';
+let baseUrl = inputConfig.webBaseUrl || 'http://localhost:8081';
+if (!baseUrl.endsWith('/OmniAudit') && !baseUrl.endsWith('/OmniAudit/')) {
+  baseUrl = baseUrl.replace(/\/$/, '') + '/OmniAudit';
+}
 
 async function clearReactInput(driver, element) {
   await driver.executeScript((el) => {

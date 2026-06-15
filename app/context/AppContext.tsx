@@ -29,6 +29,7 @@ type AppContextType = {
   logoutUser: () => void;
   addHistoryItem: (item: HistoryItem) => void;
   updateProfile: (updates: Partial<UserProfile>) => void;
+  resetPassword: (emailOrUsername: string, newPassword?: string) => boolean;
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -312,6 +313,27 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const resetPassword = (emailOrUsername: string, newPassword?: string) => {
+    const user = usersDatabase[emailOrUsername];
+    if (user) {
+      const updatedRecord = {
+        ...user,
+        password: newPassword
+      };
+      const updatedDb = {
+        ...usersDatabase,
+        [user.username]: updatedRecord,
+        [user.email]: updatedRecord
+      };
+      setUsersDatabase(updatedDb);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('omni_usersDatabase', JSON.stringify(updatedDb));
+      }
+      return true;
+    }
+    return false;
+  };
+
   return (
     <AppContext.Provider value={{
       usersDatabase,
@@ -323,6 +345,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       logoutUser,
       addHistoryItem,
       updateProfile,
+      resetPassword,
     }}>
       {children}
     </AppContext.Provider>
