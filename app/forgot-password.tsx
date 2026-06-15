@@ -27,7 +27,7 @@ export default function ForgotPasswordScreen() {
 
   // Countdown timer for automatic redirect to login screen
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: any = null;
     if (isResetSuccess && countdown > 0) {
       timer = setTimeout(() => {
         setCountdown(prev => prev - 1);
@@ -35,7 +35,11 @@ export default function ForgotPasswordScreen() {
     } else if (isResetSuccess && countdown === 0) {
       router.replace('/login');
     }
-    return () => clearTimeout(timer);
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
   }, [isResetSuccess, countdown]);
 
   const handleSendOtp = () => {
