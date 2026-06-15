@@ -10,8 +10,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "predeploy": "npx expo export --platform web",
-    "deploy": "gh-pages -d dist"
+    "predeploy": "npx expo export --platform web && node -e \"require('fs').writeFileSync('dist/.nojekyll', '')\"",
+    "deploy": "gh-pages -d dist -t"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

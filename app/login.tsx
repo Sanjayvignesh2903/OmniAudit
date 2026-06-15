@@ -299,7 +299,9 @@ export default function LoginScreen() {
               const height = 650;
               const left = (window.screen.width / 2) - (width / 2);
               const top = (window.screen.height / 2) - (height / 2);
-              window.open('/google-login', 'GoogleLoginPopup', `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no`);
+              const basePath = window.location.pathname.includes('/OmniAudit') ? '/OmniAudit' : '';
+              const popupUrl = `${window.location.origin}${basePath}/google-login`;
+              window.open(popupUrl, 'GoogleLoginPopup', `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no`);
             } else {
               setShowGoogleModal(true);
             }

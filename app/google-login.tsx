@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, TextInput, ActivityIndicator, Platform, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { User, AlertCircle } from 'lucide-react-native';
+import Svg, { Path } from 'react-native-svg';
 import { theme } from '../constants/theme';
 
 export default function GoogleLoginScreen() {
@@ -50,24 +51,24 @@ export default function GoogleLoginScreen() {
       <View style={styles.card}>
         {/* Google Multicolored Logo */}
         <View style={styles.logoContainer}>
-          <svg width="40" height="40" viewBox="0 0 24 24" style={{ display: 'block' }}>
-            <path
+          <Svg width="40" height="40" viewBox="0 0 24 24">
+            <Path
               fill="#EA4335"
               d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.39 3.67 1.5 7.56l3.78 2.93c.89-2.67 3.39-4.45 6.72-4.45z"
             />
-            <path
+            <Path
               fill="#4285F4"
               d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.43c-.28 1.44-1.09 2.67-2.33 3.51l3.61 2.8c2.12-1.95 3.78-4.83 3.78-8.46z"
             />
-            <path
+            <Path
               fill="#FBBC05"
               d="M5.28 14.77c-.23-.67-.36-1.39-.36-2.13s.13-1.46.36-2.13L1.5 7.58C.54 9.48 0 11.64 0 13s.54 3.52 1.5 5.42l3.78-2.65z"
             />
-            <path
+            <Path
               fill="#34A853"
               d="M12 23c3.24 0 5.97-1.09 7.96-2.95l-3.61-2.8c-1.01.67-2.3 1.09-4.35 1.09-3.33 0-5.83-1.78-6.72-4.45L1.5 16.82C3.39 20.71 7.35 23 12 23z"
             />
-          </svg>
+          </Svg>
         </View>
 
         <Text style={styles.title}>Sign in with Google</Text>

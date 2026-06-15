@@ -1,8 +1,32 @@
 import { Tabs } from 'expo-router';
 import { Home, History, User } from 'lucide-react-native';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme } from '../../constants/theme';
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
+  const isMobileWeb = Platform.OS === 'web' && 
+    typeof window !== 'undefined' && 
+    window.navigator && 
+    /Mobi|Android|iPhone/i.test(window.navigator.userAgent);
+
+  const getTabBarStyles = () => {
+    if (Platform.OS === 'web') {
+      return {
+        height: isMobileWeb ? 78 : 64,
+        paddingBottom: isMobileWeb ? 22 : 10,
+        paddingTop: 8,
+      };
+    }
+    return {
+      height: 60 + (insets.bottom > 0 ? insets.bottom - 10 : 0),
+      paddingBottom: insets.bottom > 0 ? insets.bottom : 8,
+      paddingTop: 8,
+    };
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -17,9 +41,7 @@ export default function TabLayout() {
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.05,
           shadowRadius: 10,
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          ...getTabBarStyles(),
         },
         tabBarLabelStyle: {
           fontFamily: theme.typography.fontFamily,
