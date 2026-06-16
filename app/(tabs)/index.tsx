@@ -13,7 +13,8 @@ import Animated, {
   withRepeat,
   withSequence,
   FadeInUp,
-  interpolateColor
+  interpolateColor,
+  SharedValue
 } from 'react-native-reanimated';
 import { theme } from '../../constants/theme';
 
@@ -22,7 +23,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const AnimatedRect = Animated.createAnimatedComponent(Rect);
 
 // Custom Animated SVGs
-const AnimatedRestaurantIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedRestaurantIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 120;
   
@@ -52,7 +53,7 @@ const AnimatedRestaurantIcon = ({ isHovered, color }: { isHovered: Animated.Shar
   );
 };
 
-const AnimatedPetrolIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedPetrolIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 100;
 
@@ -82,7 +83,7 @@ const AnimatedPetrolIcon = ({ isHovered, color }: { isHovered: Animated.SharedVa
   );
 };
 
-const AnimatedPharmacyIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedPharmacyIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 150;
 
@@ -112,7 +113,7 @@ const AnimatedPharmacyIcon = ({ isHovered, color }: { isHovered: Animated.Shared
   );
 };
 
-const AnimatedRentalIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedRentalIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 120;
 
@@ -143,7 +144,7 @@ const AnimatedRentalIcon = ({ isHovered, color }: { isHovered: Animated.SharedVa
   );
 };
 
-const AnimatedHotelIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedHotelIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const windowPulse = useSharedValue(0);
 
   useAnimatedReaction(
@@ -175,7 +176,7 @@ const AnimatedHotelIcon = ({ isHovered, color }: { isHovered: Animated.SharedVal
   );
 };
 
-const AnimatedElectricityIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedElectricityIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const strokeWidth = useSharedValue(1.5);
   const length = 80;
@@ -209,7 +210,7 @@ const AnimatedElectricityIcon = ({ isHovered, color }: { isHovered: Animated.Sha
   );
 };
 
-const AnimatedGroceryIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedGroceryIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 120;
 
@@ -241,7 +242,7 @@ const AnimatedGroceryIcon = ({ isHovered, color }: { isHovered: Animated.SharedV
   );
 };
 
-const AnimatedTravelIcon = ({ isHovered, color }: { isHovered: Animated.SharedValue<number>, color: string }) => {
+const AnimatedTravelIcon = ({ isHovered, color }: { isHovered: SharedValue<number>, color: string }) => {
   const dash = useSharedValue(0);
   const length = 160;
   const trailDash = useSharedValue(20);

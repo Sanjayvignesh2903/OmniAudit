@@ -6,9 +6,6 @@ const path = require('path');
 
 const inputConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../input.json'), 'utf8'));
 let baseUrl = inputConfig.webBaseUrl || 'http://localhost:8081';
-if (!baseUrl.endsWith('/OmniAudit') && !baseUrl.endsWith('/OmniAudit/')) {
-  baseUrl = baseUrl.replace(/\/$/, '') + '/OmniAudit';
-}
 
 async function clearReactInput(driver, element) {
   await driver.executeScript((el) => {
@@ -20,6 +17,37 @@ async function clearReactInput(driver, element) {
 
 async function runSeleniumTests() {
   console.log('Starting Selenium Web E2E Test Suite...');
+  
+  // Resolve base URL dynamically depending on where the app is served (root vs sub-path)
+  let targetUrl = baseUrl;
+  if (!targetUrl.endsWith('/OmniAudit') && !targetUrl.endsWith('/OmniAudit/')) {
+    targetUrl = targetUrl.replace(/\/$/, '') + '/OmniAudit';
+  }
+  
+  console.log(`Probing base URL: ${targetUrl}`);
+  try {
+    const isAvailable = await new Promise((resolve) => {
+      const client = targetUrl.startsWith('https') ? require('https') : require('http');
+      const req = client.get(targetUrl, (res) => {
+        resolve(res.statusCode !== 404);
+      });
+      req.on('error', () => resolve(false));
+      req.setTimeout(3000, () => {
+        req.destroy();
+        resolve(false);
+      });
+    });
+    if (!isAvailable) {
+      console.log(`Sub-path /OmniAudit is not served (returned 404 or connection error). Falling back to root URL: ${baseUrl}`);
+      targetUrl = baseUrl.replace(/\/OmniAudit\/?$/, '');
+    }
+  } catch (err) {
+    console.log(`Probing failed: ${err.message}. Defaulting to root URL.`);
+    targetUrl = baseUrl.replace(/\/OmniAudit\/?$/, '');
+  }
+  baseUrl = targetUrl;
+  console.log(`Using resolved base URL: ${baseUrl}`);
+
   const options = new chrome.Options();
   options.addArguments('--headless'); // Headless browser for background execution
   options.addArguments('--disable-gpu');
@@ -334,11 +362,25 @@ async function runSeleniumTests() {
     const allHandles = await driver.getAllWindowHandles();
     const popupHandle = allHandles.find(h => h !== originalWindow);
     await driver.switchTo().window(popupHandle);
- 
+    await driver.sleep(1000); // Allow React Native Web app in popup to settle/hydrate
+
     // Select Sanjay Vignesh account in popup chooser
-    const accountCard = await driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Sanjay Vignesh')]")), 8000);
-    await driver.executeScript("arguments[0].click();", accountCard);
- 
+    let clickedAccount = false;
+    for (let i = 0; i < 3; i++) {
+      try {
+        const accountCard = await driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Sanjay Vignesh')]")), 8000);
+        await driver.executeScript("arguments[0].click();", accountCard);
+        clickedAccount = true;
+        break;
+      } catch (clickErr) {
+        console.log(`Stale or unclickable account card on attempt ${i + 1}, retrying...`);
+        await driver.sleep(1000);
+      }
+    }
+    if (!clickedAccount) {
+      throw new Error("Unable to click Sanjay Vignesh account card in popup");
+    }
+
     // Switch back to parent window
     await driver.switchTo().window(originalWindow);
  
