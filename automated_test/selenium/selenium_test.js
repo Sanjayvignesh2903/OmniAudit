@@ -84,6 +84,8 @@ async function runSeleniumTests() {
       window.localStorage.clear();
       window.localStorage.setItem('is_selenium_test', 'true');
     });
+    // Add a wait to ensure Metro bundler has fully served the initial payload
+    await driver.sleep(5000); 
     await driver.navigate().refresh();
     
     let duration = Date.now() - startTime;
@@ -91,7 +93,7 @@ async function runSeleniumTests() {
 
     // Test Case 2: Validate Splash Redirection to Login
     startTime = Date.now();
-    await driver.wait(until.urlContains('/login'), 8000);
+    await driver.wait(until.urlContains('/login'), 20000); // Generous timeout for Metro on CI
     duration = Date.now() - startTime;
     const currentUrl = await driver.getCurrentUrl();
     recordResult('TC-02', 'Splash Screen Routing Validation', 'PASS', duration, `Routed to Login page correctly: ${currentUrl}`);
