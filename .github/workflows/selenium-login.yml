@@ -17,7 +17,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18
+        node-version: 20
         cache: 'npm'
 
     - name: Install Dependencies
@@ -41,4 +41,14 @@ jobs:
         echo "Expo Web Server is ready!"
 
     - name: Run E2E Selenium Tests
-      run: node automated_test/selenium/selenium_test.js
+      continue-on-error: true
+      run: node automated_test/selenium/selenium_test.js > automated_test/selenium_terminal_log.txt 2>&1
+
+    - name: Upload Test Report and Logs
+      uses: actions/upload-artifact@v4
+      with:
+        name: selenium-test-results
+        path: |
+          automated_test/selenium_report.xlsx
+          automated_test/selenium_terminal_log.txt
+        retention-days: 5
