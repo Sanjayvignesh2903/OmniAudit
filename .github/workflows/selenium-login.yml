@@ -36,9 +36,9 @@ jobs:
 
     - name: Start Dev Server
       run: |
-        npx expo start --web &
-        echo "Waiting for Metro Bundler to start..."
-        sleep 40 # Give generous time for Expo Metro bundler to compile in CI
+        CI=1 npx expo start --web &
+        npx wait-on -t 120000 http://localhost:8081
+        echo "Expo Web Server is ready!"
 
     - name: Run E2E Selenium Tests
       run: node automated_test/selenium/selenium_test.js
