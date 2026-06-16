@@ -21,7 +21,10 @@ jobs:
         cache: 'npm'
 
     - name: Install Dependencies
-      run: npm install
+      run: |
+        npm install
+        cd automated_test
+        npm install
 
     - name: Install Google Chrome and ChromeDriver
       run: |

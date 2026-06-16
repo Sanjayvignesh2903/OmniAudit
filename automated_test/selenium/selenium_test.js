@@ -50,6 +50,7 @@ async function runSeleniumTests() {
 
   const options = new chrome.Options();
   options.addArguments('--headless'); // Headless browser for background execution
+  options.addArguments('--window-size=1920,1080');
   options.addArguments('--disable-gpu');
   options.addArguments('--no-sandbox');
 
